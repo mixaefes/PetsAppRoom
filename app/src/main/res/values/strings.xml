@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">PetsAppRoom</string>
+    <string name="description_action_button_to_add_new_pet">Action button to add new pet</string>
 </resources>
