@@ -13,7 +13,7 @@ abstract class PetsRoomDatabase : RoomDatabase() {
         // Singleton prevents multiple instances of database opening at the
         // same time.
         private var INSTANCE: PetsRoomDatabase? = null
-        private fun getDatabase(context: Context): PetsRoomDatabase {
+         fun getDatabase(context: Context): PetsRoomDatabase {
             // if the INSTANCE is not null, then return it,
             // if it is, then create the database
             return INSTANCE ?: synchronized(this) {

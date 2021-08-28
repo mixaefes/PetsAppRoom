@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "pets")
-class EntityPet(
+data class EntityPet(
     @PrimaryKey(autoGenerate = true) val id: Int,
     val name: String,
     val breed: String,
