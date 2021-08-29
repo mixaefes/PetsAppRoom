@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">PetsAppRoom</string>
     <string name="description_action_button_to_add_new_pet">Action button to add new pet</string>
+    <string name="gender_unknown">UNKNOWN</string>
+    <string name="gender_male">MALE</string>
+    <string name="gender_female">FEMALE</string>
 </resources>
