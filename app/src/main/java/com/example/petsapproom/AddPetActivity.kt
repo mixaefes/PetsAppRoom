@@ -26,10 +26,10 @@ class AddPetActivity : AppCompatActivity() {
                 TextUtils.isEmpty(binding.editTextBreed.text) -> setResult(RESULT_CANCELED)
                 TextUtils.isEmpty(binding.editTextWeight.text) -> setResult(RESULT_CANCELED)
                 else -> {
-                    resultIntent.putExtra(EXTRA_REPLY, binding.editTextName.text)
-                    resultIntent.putExtra(EXTRA_REPLY, binding.editTextBreed.text)
-                    resultIntent.putExtra(EXTRA_REPLY, gender)
-                    resultIntent.putExtra(EXTRA_REPLY, binding.editTextWeight.text)
+                    resultIntent.putExtra(EXTRA_REPLY_NAME, binding.editTextName.text)
+                    resultIntent.putExtra(EXTRA_REPLY_BREED, binding.editTextBreed.text)
+                    resultIntent.putExtra(EXTRA_REPLY_GENDER, gender)
+                    resultIntent.putExtra(EXTRA_REPLY_WEIGHT, binding.editTextWeight.text)
                     setResult(RESULT_OK)
 
                 }
@@ -68,6 +68,9 @@ class AddPetActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val EXTRA_REPLY = "com.example.android.wordlistsql.REPLY"
+        const val EXTRA_REPLY_NAME = "NAME"
+        const val EXTRA_REPLY_BREED = "BREED"
+        const val EXTRA_REPLY_GENDER = "GENDER"
+        const val EXTRA_REPLY_WEIGHT = "WEIGHT"
     }
 }
