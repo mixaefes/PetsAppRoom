@@ -4,37 +4,47 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.SpinnerAdapter
 import android.widget.Toast
+import androidx.activity.viewModels
+import com.example.petsapproom.data.EntityPet
 import com.example.petsapproom.databinding.ActivityAddPetBinding
+import com.example.petsapproom.model.PetViewModelFactory
+import com.example.petsapproom.model.PetsViewModel
 
 class AddPetActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddPetBinding
     private var gender: Int = 0
+    private val resultIntent = Intent()
+
+
+    private val petViewModel : PetsViewModel by viewModels{
+        PetViewModelFactory((application as PetsApplication).repository)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddPetBinding.inflate(layoutInflater)
         setupSpinner()
         setContentView(binding.root)
         binding.imageButtonAdd.setOnClickListener {
-            val resultIntent = Intent()
-            when {
-                TextUtils.isEmpty(binding.editTextName.text) -> setResult(RESULT_CANCELED)
-                TextUtils.isEmpty(binding.editTextBreed.text) -> setResult(RESULT_CANCELED)
-                TextUtils.isEmpty(binding.editTextWeight.text) -> setResult(RESULT_CANCELED)
-                else -> {
-                    resultIntent.putExtra(EXTRA_REPLY_NAME, binding.editTextName.text)
-                    resultIntent.putExtra(EXTRA_REPLY_BREED, binding.editTextBreed.text)
-                    resultIntent.putExtra(EXTRA_REPLY_GENDER, gender)
-                    resultIntent.putExtra(EXTRA_REPLY_WEIGHT, binding.editTextWeight.text)
-                    setResult(RESULT_OK)
+          when {
+              TextUtils.isEmpty(binding.editTextName.text) -> setResult(RESULT_CANCELED)
+              TextUtils.isEmpty(binding.editTextBreed.text) -> setResult(RESULT_CANCELED)
+              TextUtils.isEmpty(binding.editTextWeight.text) -> setResult(RESULT_CANCELED)
+              else -> setResult(RESULT_OK)
+          }
 
-                }
-            }
-            finish()
+            val name = binding.editTextName.text.toString()
+            val breed = binding.editTextBreed.text.toString()
+            val weight = Integer.parseInt(binding.editTextWeight.text.toString())
+            val newPet = EntityPet(name = name,breed = breed,gender=gender,weight = weight)
+            Log.i("AddpetActivity","newPet is : $newPet")
+            petViewModel.insertPet(newPet)
+           finish()
         }
     }
 
@@ -54,9 +64,9 @@ class AddPetActivity : AppCompatActivity() {
                 id: Long
             ) {
                 when (parent?.getItemAtPosition(position)) {
-                    R.string.gender_unknown -> gender = 0
-                    R.string.gender_male -> gender = 1
-                    R.string.gender_female -> gender = 2
+                    getText(R.string.gender_unknown) -> gender = 0
+                    getText(R.string.gender_male) -> gender = 1
+                    getText(R.string.gender_female) -> gender = 2
                 }
             }
 

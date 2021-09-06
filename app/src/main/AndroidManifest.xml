@@ -10,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PetsAppRoom">
-        <activity android:name=".AddPetActivity"></activity>
+        <activity android:name=".AddPetActivity"/>
+        <activity android:name=".settings.SettingsActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

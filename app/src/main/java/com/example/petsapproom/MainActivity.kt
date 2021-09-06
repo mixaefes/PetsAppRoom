@@ -3,6 +3,9 @@ package com.example.petsapproom
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -15,10 +18,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.petsapproom.adapter.PetAdapter
 import com.example.petsapproom.data.EntityPet
+import com.example.petsapproom.settings.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val activityRequestCode = 1
+    private lateinit var myIntent: Intent
 
     private val petViewModel : PetsViewModel by viewModels{
             PetViewModelFactory((application as PetsApplication).repository)
@@ -36,33 +41,31 @@ class MainActivity : AppCompatActivity() {
             it.let{adapter.submitList(it)}
         }
 
-
-        resultLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                if (it.resultCode == RESULT_OK) {
-                    val name = it.data?.getStringExtra(AddPetActivity.EXTRA_REPLY_NAME)
-                    val breed = it.data?.getStringExtra(AddPetActivity.EXTRA_REPLY_BREED)
-                    val gender = it.data?.getIntExtra(AddPetActivity.EXTRA_REPLY_GENDER, 0)
-                    val weight = it.data?.getIntExtra(AddPetActivity.EXTRA_REPLY_WEIGHT, 0)
-                    Toast.makeText(
-                        this,
-                        "thanks for adding information. name = $name breed = $breed gender = $gender weight = $weight",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    val pet = EntityPet(name=name!!,breed = breed!!,gender = gender!!, weight = weight!!)
-                    petViewModel.insertPet(pet)
-
-                } else {
-                    Toast.makeText(this, "you aren't add information", Toast.LENGTH_SHORT).show()
-                }
-            }
         binding.floatingActionButton.setOnClickListener {
             startAddActivity()
         }
     }
 
+
     private fun startAddActivity() {
-        val intent = Intent(this, AddPetActivity::class.java)
-        resultLauncher.launch(intent)
+        myIntent = Intent(this, AddPetActivity::class.java)
+        startActivity(myIntent)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val menuInflater = MenuInflater(this)
+        menuInflater.inflate(R.menu.menu,menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId){
+            R.id.settings_id ->{
+                val intentMenu = Intent(this,SettingsActivity::class.java)
+                startActivity(intentMenu)
+                true
+            }
+            else ->super.onOptionsItemSelected(item)
+        }
     }
 }
