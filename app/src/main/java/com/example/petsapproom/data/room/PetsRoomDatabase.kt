@@ -1,9 +1,10 @@
-package com.example.petsapproom.data
+package com.example.petsapproom.data.room
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.petsapproom.Constants
 
 @Database(entities = [EntityPet::class], version = 1, exportSchema = false)
 abstract class PetsRoomDatabase : RoomDatabase() {
@@ -20,7 +21,7 @@ abstract class PetsRoomDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context,
                     PetsRoomDatabase::class.java,
-                    "petsDatabase"
+                    Constants.DATABASE_NAME
                 ).build()
                 INSTANCE = instance
                 //return instance

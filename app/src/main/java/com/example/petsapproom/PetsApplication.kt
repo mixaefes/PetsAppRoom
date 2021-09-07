@@ -1,8 +1,8 @@
 package com.example.petsapproom
 
 import android.app.Application
-import com.example.petsapproom.data.PetsRepository
-import com.example.petsapproom.data.PetsRoomDatabase
+import com.example.petsapproom.data.room.PetsRepository
+import com.example.petsapproom.data.room.PetsRoomDatabase
 
 class PetsApplication : Application(){
     val database by lazy { PetsRoomDatabase.getDatabase(this) }

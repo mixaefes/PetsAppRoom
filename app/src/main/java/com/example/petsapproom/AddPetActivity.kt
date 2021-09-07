@@ -11,7 +11,9 @@ import android.widget.ArrayAdapter
 import android.widget.SpinnerAdapter
 import android.widget.Toast
 import androidx.activity.viewModels
-import com.example.petsapproom.data.EntityPet
+import androidx.preference.PreferenceManager
+import com.example.petsapproom.data.cursor.PetOpenHelper
+import com.example.petsapproom.data.room.EntityPet
 import com.example.petsapproom.databinding.ActivityAddPetBinding
 import com.example.petsapproom.model.PetViewModelFactory
 import com.example.petsapproom.model.PetsViewModel
@@ -42,9 +44,21 @@ class AddPetActivity : AppCompatActivity() {
             val breed = binding.editTextBreed.text.toString()
             val weight = Integer.parseInt(binding.editTextWeight.text.toString())
             val newPet = EntityPet(name = name,breed = breed,gender=gender,weight = weight)
-            Log.i("AddpetActivity","newPet is : $newPet")
-            petViewModel.insertPet(newPet)
-           finish()
+            //check preferences to insert new pet
+            val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+            if(prefs.getBoolean("switch_to_cursor",false)){
+                val petDbHelper = PetOpenHelper(this)
+               val newRowId = petDbHelper.insertPet(newPet)
+                Log.i("AddPetActivity","inset new pet by cursor")
+                if(newRowId>0){
+                    finish()
+                }else{
+                    Toast.makeText(this, "Something was wrong", Toast.LENGTH_SHORT).show()
+                }
+            }else {
+                petViewModel.insertPet(newPet)
+                finish()
+            }
         }
     }
 

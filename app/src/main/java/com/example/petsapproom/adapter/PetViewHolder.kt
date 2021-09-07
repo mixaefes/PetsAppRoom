@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.petsapproom.PetsApplication
 import com.example.petsapproom.R
 
-import com.example.petsapproom.data.EntityPet
+import com.example.petsapproom.data.room.EntityPet
 import com.example.petsapproom.databinding.PetItemViewBinding
 
 class PetViewHolder(private val binding: PetItemViewBinding) :

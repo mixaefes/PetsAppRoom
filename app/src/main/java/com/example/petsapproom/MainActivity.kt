@@ -10,14 +10,14 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import com.example.petsapproom.data.PetsRepository
+import com.example.petsapproom.data.room.PetsRepository
 import com.example.petsapproom.databinding.ActivityMainBinding
 import com.example.petsapproom.model.PetViewModelFactory
 import com.example.petsapproom.model.PetsViewModel
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.petsapproom.adapter.PetAdapter
-import com.example.petsapproom.data.EntityPet
+import com.example.petsapproom.data.room.EntityPet
 import com.example.petsapproom.settings.SettingsActivity
 
 class MainActivity : AppCompatActivity() {

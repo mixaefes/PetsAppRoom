@@ -1,4 +1,4 @@
-package com.example.petsapproom.data
+package com.example.petsapproom.data.room
 
 import androidx.room.Dao
 import androidx.room.Insert

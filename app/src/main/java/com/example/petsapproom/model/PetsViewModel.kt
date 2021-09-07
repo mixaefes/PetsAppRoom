@@ -1,8 +1,8 @@
 package com.example.petsapproom.model
 
 import androidx.lifecycle.*
-import com.example.petsapproom.data.EntityPet
-import com.example.petsapproom.data.PetsRepository
+import com.example.petsapproom.data.room.EntityPet
+import com.example.petsapproom.data.room.PetsRepository
 import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
 

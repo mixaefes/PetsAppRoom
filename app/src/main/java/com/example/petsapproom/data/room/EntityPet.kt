@@ -1,10 +1,10 @@
-package com.example.petsapproom.data
+package com.example.petsapproom.data.room
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.petsapproom.Constants
 
-@Entity(tableName = "pets")
+@Entity(tableName = Constants.TABLE_PETS_NAME)
 data class EntityPet(
     @PrimaryKey(autoGenerate = true) var id: Int = 0,
     var name: String,

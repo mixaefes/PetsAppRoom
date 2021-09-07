@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.example.petsapproom.data.EntityPet
+import com.example.petsapproom.data.room.EntityPet
 import com.example.petsapproom.databinding.PetItemViewBinding
 
 class PetAdapter : ListAdapter<EntityPet,PetViewHolder>(itemComparator) {
