@@ -1,5 +1,6 @@
 package com.example.petsapproom
 
+import android.app.Application
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,6 +16,7 @@ import com.example.petsapproom.databinding.ActivityMainBinding
 import com.example.petsapproom.model.PetViewModelFactory
 import com.example.petsapproom.model.PetsViewModel
 import androidx.fragment.app.Fragment
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.petsapproom.adapter.PetAdapter
 import com.example.petsapproom.data.room.EntityPet
@@ -25,9 +27,13 @@ class MainActivity : AppCompatActivity() {
     private val activityRequestCode = 1
     private lateinit var myIntent: Intent
 
-    private val petViewModel : PetsViewModel by viewModels{
-            PetViewModelFactory((application as PetsApplication).repository)
-        }
+    private val petViewModel: PetsViewModel by viewModels {
+        PetViewModelFactory(
+            (application as PetsApplication).repository,
+            PreferenceManager.getDefaultSharedPreferences(application.applicationContext),
+            application.applicationContext
+        )
+    }
     private lateinit var resultLauncher: ActivityResultLauncher<Intent>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +43,8 @@ class MainActivity : AppCompatActivity() {
         val adapter = PetAdapter()
         binding.recyclerView.adapter = adapter
 
-        petViewModel.allPets.observe( this){
-            it.let{adapter.submitList(it)}
+        petViewModel.allPets.observe(this) {
+            it.let { adapter.submitList(it) }
         }
 
         binding.floatingActionButton.setOnClickListener {
@@ -53,19 +59,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val menuInflater = MenuInflater(this)
-        menuInflater.inflate(R.menu.menu,menu)
+        menuInflater.inflate(R.menu.menu, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId){
-            R.id.settings_id ->{
-                val intentMenu = Intent(this,SettingsActivity::class.java)
+        return when (item.itemId) {
+            R.id.settings_id -> {
+                val intentMenu = Intent(this, SettingsActivity::class.java)
                 startActivity(intentMenu)
                 true
             }
-            else ->super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }

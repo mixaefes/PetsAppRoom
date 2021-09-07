@@ -1,5 +1,6 @@
 package com.example.petsapproom
 
+import android.app.Application
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -24,41 +25,34 @@ class AddPetActivity : AppCompatActivity() {
     private val resultIntent = Intent()
 
 
-    private val petViewModel : PetsViewModel by viewModels{
-        PetViewModelFactory((application as PetsApplication).repository)
+    private val petViewModel: PetsViewModel by viewModels {
+        PetViewModelFactory(
+            (application as PetsApplication).repository,
+            PreferenceManager.getDefaultSharedPreferences(application.applicationContext),
+            application.applicationContext
+        )
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddPetBinding.inflate(layoutInflater)
         setupSpinner()
         setContentView(binding.root)
         binding.imageButtonAdd.setOnClickListener {
-          when {
-              TextUtils.isEmpty(binding.editTextName.text) -> setResult(RESULT_CANCELED)
-              TextUtils.isEmpty(binding.editTextBreed.text) -> setResult(RESULT_CANCELED)
-              TextUtils.isEmpty(binding.editTextWeight.text) -> setResult(RESULT_CANCELED)
-              else -> setResult(RESULT_OK)
-          }
+            when {
+                TextUtils.isEmpty(binding.editTextName.text) -> setResult(RESULT_CANCELED)
+                TextUtils.isEmpty(binding.editTextBreed.text) -> setResult(RESULT_CANCELED)
+                TextUtils.isEmpty(binding.editTextWeight.text) -> setResult(RESULT_CANCELED)
+                else -> setResult(RESULT_OK)
+            }
 
             val name = binding.editTextName.text.toString()
             val breed = binding.editTextBreed.text.toString()
             val weight = Integer.parseInt(binding.editTextWeight.text.toString())
-            val newPet = EntityPet(name = name,breed = breed,gender=gender,weight = weight)
-            //check preferences to insert new pet
-            val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-            if(prefs.getBoolean("switch_to_cursor",false)){
-                val petDbHelper = PetOpenHelper(this)
-               val newRowId = petDbHelper.insertPet(newPet)
-                Log.i("AddPetActivity","inset new pet by cursor")
-                if(newRowId>0){
-                    finish()
-                }else{
-                    Toast.makeText(this, "Something was wrong", Toast.LENGTH_SHORT).show()
-                }
-            }else {
-                petViewModel.insertPet(newPet)
-                finish()
-            }
+            val newPet = EntityPet(name = name, breed = breed, gender = gender, weight = weight)
+
+            petViewModel.insertPet(newPet)
+            finish()
         }
     }
 
@@ -85,7 +79,8 @@ class AddPetActivity : AppCompatActivity() {
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                Toast.makeText(this@AddPetActivity, "choose gender please", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@AddPetActivity, "choose gender please", Toast.LENGTH_SHORT)
+                    .show()
             }
 
         }
