@@ -7,17 +7,18 @@ import androidx.recyclerview.widget.ListAdapter
 import com.example.petsapproom.data.room.EntityPet
 import com.example.petsapproom.databinding.PetItemViewBinding
 
-class PetAdapter : ListAdapter<EntityPet,PetViewHolder>(itemComparator) {
+class PetAdapter(private val onPetClickListener: OnPetClickListener) : ListAdapter<EntityPet,PetViewHolder>(itemComparator) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PetViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = PetItemViewBinding.inflate(inflater,parent,false)
-        return PetViewHolder(binding)
+        return PetViewHolder(binding,onPetClickListener)
     }
 
     override fun onBindViewHolder(holder: PetViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
-  private  companion object {
+
+    private  companion object {
         val itemComparator = object :DiffUtil.ItemCallback<EntityPet>(){
             override fun areItemsTheSame(oldItem: EntityPet, newItem: EntityPet): Boolean  = oldItem==newItem
 

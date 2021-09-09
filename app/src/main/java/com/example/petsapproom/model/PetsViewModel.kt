@@ -37,7 +37,9 @@ private val context: Context) : ViewModel() {
             viewModelScope.launch { repository.insert(entityPet) }
         }
     }
-
+    fun updatePet(entityPet: EntityPet){
+        viewModelScope.launch { repository.update(entityPet) }
+    }
 
 }
 

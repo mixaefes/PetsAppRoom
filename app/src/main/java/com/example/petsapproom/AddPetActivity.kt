@@ -38,6 +38,9 @@ class AddPetActivity : AppCompatActivity() {
         binding = ActivityAddPetBinding.inflate(layoutInflater)
         setupSpinner()
         setContentView(binding.root)
+        val extraId = intent.getIntExtra("id_key", 0)
+        Log.i(LOG_TAG,"extraId = $extraId")
+
         binding.imageButtonAdd.setOnClickListener {
             when {
                 TextUtils.isEmpty(binding.editTextName.text) -> setResult(RESULT_CANCELED)
@@ -50,8 +53,13 @@ class AddPetActivity : AppCompatActivity() {
             val breed = binding.editTextBreed.text.toString()
             val weight = Integer.parseInt(binding.editTextWeight.text.toString())
             val newPet = EntityPet(name = name, breed = breed, gender = gender, weight = weight)
+            if (extraId != 0) {
+                newPet.id = extraId
+                petViewModel.updatePet(newPet)
+            } else {
+                petViewModel.insertPet(newPet)
+            }
 
-            petViewModel.insertPet(newPet)
             finish()
         }
     }
@@ -91,5 +99,6 @@ class AddPetActivity : AppCompatActivity() {
         const val EXTRA_REPLY_BREED = "BREED"
         const val EXTRA_REPLY_GENDER = "GENDER"
         const val EXTRA_REPLY_WEIGHT = "WEIGHT"
+        private const val LOG_TAG = "AddPetActivity"
     }
 }

@@ -1,28 +1,23 @@
 package com.example.petsapproom
 
-import android.app.Application
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import com.example.petsapproom.data.room.PetsRepository
 import com.example.petsapproom.databinding.ActivityMainBinding
 import com.example.petsapproom.model.PetViewModelFactory
 import com.example.petsapproom.model.PetsViewModel
-import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.petsapproom.adapter.OnPetClickListener
 import com.example.petsapproom.adapter.PetAdapter
-import com.example.petsapproom.data.room.EntityPet
 import com.example.petsapproom.settings.SettingsActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnPetClickListener {
     private lateinit var binding: ActivityMainBinding
     private val activityRequestCode = 1
     private lateinit var myIntent: Intent
@@ -40,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = PetAdapter()
+        val adapter = PetAdapter(this)
         binding.recyclerView.adapter = adapter
 
         petViewModel.allPets.observe(this) {
@@ -72,5 +67,17 @@ class MainActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onPetClick(position: Int) {
+        val petsList = petViewModel.allPets.value
+        val pet = petsList?.get(position)
+        Log.i(LOG_TAG,"this is checked pet: $pet")
+        val updateIntent = Intent(this, AddPetActivity::class.java)
+        updateIntent.putExtra("id_key",petViewModel.allPets.value?.get(position)?.id)
+        startActivity(updateIntent)
+    }
+    companion object{
+       private const val LOG_TAG = "MainActivity"
     }
 }

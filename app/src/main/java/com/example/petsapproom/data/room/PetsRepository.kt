@@ -19,4 +19,9 @@ class PetsRepository(private val petsDao: PetsDao) {
     suspend fun insert(entityPet: EntityPet){
         petsDao.insertPet(entityPet)
     }
+    @Suppress
+    @WorkerThread
+    suspend fun update(entityPet: EntityPet){
+        petsDao.updatePet(entityPet)
+    }
 }

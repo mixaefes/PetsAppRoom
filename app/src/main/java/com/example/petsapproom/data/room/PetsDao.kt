@@ -1,9 +1,6 @@
 package com.example.petsapproom.data.room
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -16,4 +13,7 @@ interface PetsDao {
 
     @Query("DELETE FROM pets")
    suspend fun deleteAllPets()
+
+   @Update
+   suspend fun updatePet(entityPet: EntityPet)
 }
