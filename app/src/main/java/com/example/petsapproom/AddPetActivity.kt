@@ -38,8 +38,23 @@ class AddPetActivity : AppCompatActivity() {
         binding = ActivityAddPetBinding.inflate(layoutInflater)
         setupSpinner()
         setContentView(binding.root)
+        //get id of view that was clicked
+
         val extraId = intent.getIntExtra("id_key", 0)
-        Log.i(LOG_TAG,"extraId = $extraId")
+        petViewModel.getPet(extraId).observe(this,{
+            pet-> pet?.let{
+            binding.buttonDelete.setOnClickListener {
+                petViewModel.deletePet(pet)
+                finish()
+            }
+                binding.editTextName.setText(it.name)
+            binding.editTextBreed.setText(it.breed)
+            binding.editTextWeight.setText(it.weight.toString())
+            binding.spinner.setSelection(it.gender)
+        }
+        })
+
+
 
         binding.imageButtonAdd.setOnClickListener {
             when {
@@ -62,6 +77,7 @@ class AddPetActivity : AppCompatActivity() {
 
             finish()
         }
+
     }
 
     private fun setupSpinner() {

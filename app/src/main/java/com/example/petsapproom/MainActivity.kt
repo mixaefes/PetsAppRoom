@@ -1,6 +1,7 @@
 package com.example.petsapproom
 
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,7 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.petsapproom.adapter.OnPetClickListener
 import com.example.petsapproom.adapter.PetAdapter
+import com.example.petsapproom.data.cursor.PetOpenHelper
 import com.example.petsapproom.settings.SettingsActivity
 
 class MainActivity : AppCompatActivity(), OnPetClickListener {
@@ -29,24 +31,38 @@ class MainActivity : AppCompatActivity(), OnPetClickListener {
             application.applicationContext
         )
     }
+    val adapter = PetAdapter(this)
+
     private lateinit var resultLauncher: ActivityResultLauncher<Intent>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = PetAdapter(this)
         binding.recyclerView.adapter = adapter
 
-        petViewModel.allPets.observe(this) {
-            it.let { adapter.submitList(it) }
-        }
+        //preferences
+
+
 
         binding.floatingActionButton.setOnClickListener {
             startAddActivity()
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        val pref = PreferenceManager.getDefaultSharedPreferences(this)
+        if(!pref.getBoolean("switch_to_cursor", false)) {
+            petViewModel.allPets.observe(this) {
+                it.let { adapter.submitList(it) }
+            }
+        }else{
+            adapter.submitList(PetOpenHelper(this).getAllPets())
+        // adapter.submitList(petViewModel.allPetsCursor)
+        }
+
+    }
 
     private fun startAddActivity() {
         myIntent = Intent(this, AddPetActivity::class.java)
@@ -70,11 +86,18 @@ class MainActivity : AppCompatActivity(), OnPetClickListener {
     }
 
     override fun onPetClick(position: Int) {
-        val petsList = petViewModel.allPets.value
+        val pref = PreferenceManager.getDefaultSharedPreferences(this)
+        val isCursor = pref.getBoolean("switch_to_cursor", false)
+
+        val petsList = if(isCursor)petViewModel.myPetDbHelper.getAllPets() else petViewModel.allPets.value
+        Log.i(LOG_TAG,"this is checked petsList: $petsList")
+
         val pet = petsList?.get(position)
         Log.i(LOG_TAG,"this is checked pet: $pet")
         val updateIntent = Intent(this, AddPetActivity::class.java)
-        updateIntent.putExtra("id_key",petViewModel.allPets.value?.get(position)?.id)
+       // updateIntent.putExtra("id_key",petViewModel.allPets.value?.get(position)?.id)
+        Log.i(LOG_TAG,"onPetClick. id=${pet?.id}")
+        updateIntent.putExtra("id_key",pet?.id)
         startActivity(updateIntent)
     }
     companion object{

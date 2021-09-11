@@ -1,6 +1,8 @@
 package com.example.petsapproom.data.room
 
+import android.util.Log
 import androidx.annotation.WorkerThread
+import androidx.lifecycle.LiveData
 import com.example.petsapproom.data.cursor.PetOpenHelper
 import kotlinx.coroutines.flow.Flow
 
@@ -19,9 +21,24 @@ class PetsRepository(private val petsDao: PetsDao) {
     suspend fun insert(entityPet: EntityPet){
         petsDao.insertPet(entityPet)
     }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun deletePet(entityPet: EntityPet){
+        petsDao.deletePet(entityPet)
+    }
     @Suppress
     @WorkerThread
     suspend fun update(entityPet: EntityPet){
         petsDao.updatePet(entityPet)
+    }
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    fun getPetById(id: Int): LiveData<EntityPet?> {
+        Log.i(TAG, "getPetById")
+        return petsDao.getPetById(id)
+    }
+    companion object{
+        private const val TAG = "PetsRepository"
     }
 }
