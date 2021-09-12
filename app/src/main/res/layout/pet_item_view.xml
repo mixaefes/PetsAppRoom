@@ -4,7 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="15dp">
+    android:layout_margin="8dp"
+    android:padding="8dp"
+    app:cardBackgroundColor="@color/color_purple"
+    app:cardCornerRadius="20dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -13,12 +16,10 @@
 
         <TextView
             android:id="@+id/textViewName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
-            android:layout_marginLeft="44dp"
-            android:layout_marginTop="8dp"
+            style="@style/text_item_view_style"
             android:text="Name:"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,6 +31,8 @@
             android:layout_marginLeft="44dp"
             android:layout_marginTop="8dp"
             android:text="Breed:"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewName" />
 
@@ -41,6 +44,8 @@
             android:layout_marginLeft="44dp"
             android:layout_marginTop="8dp"
             android:text="Gender:"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewBreed" />
 
@@ -52,6 +57,8 @@
             android:layout_marginLeft="44dp"
             android:layout_marginTop="8dp"
             android:text="Weight:"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewItemGender" />
 
@@ -69,6 +76,7 @@
             android:layout_marginStart="56dp"
             android:layout_marginLeft="56dp"
             android:text="TextView"
+            android:textColor="#FFFFFF"
             app:layout_constraintBaseline_toBaselineOf="@+id/textViewName"
             app:layout_constraintStart_toStartOf="@+id/guideline2" />
 
@@ -79,6 +87,7 @@
             android:layout_marginStart="56dp"
             android:layout_marginLeft="56dp"
             android:text="TextView"
+            android:textColor="#FFFFFF"
             app:layout_constraintBaseline_toBaselineOf="@+id/textViewBreed"
             app:layout_constraintStart_toStartOf="@+id/guideline2" />
 
@@ -89,6 +98,7 @@
             android:layout_marginStart="56dp"
             android:layout_marginLeft="56dp"
             android:text="TextView"
+            android:textColor="#FFFFFF"
             app:layout_constraintBaseline_toBaselineOf="@+id/textViewItemGender"
             app:layout_constraintStart_toStartOf="@+id/guideline2" />
 
@@ -99,6 +109,7 @@
             android:layout_marginStart="56dp"
             android:layout_marginLeft="56dp"
             android:text="TextView"
+            android:textColor="#FFFFFF"
             app:layout_constraintBaseline_toBaselineOf="@+id/textViewWeight"
             app:layout_constraintStart_toStartOf="@+id/guideline2" />
 
