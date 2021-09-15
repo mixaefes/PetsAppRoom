@@ -28,9 +28,7 @@ class MainActivity : AppCompatActivity(), OnPetClickListener {
     private lateinit var petsList: List<EntityPet>
     private val petViewModel: PetsViewModel by viewModels {
         PetViewModelFactory(
-            (application as PetsApplication).repository,
-            PreferenceManager.getDefaultSharedPreferences(application.applicationContext),
-            application.applicationContext
+            (application as PetsApplication).repository
         )
     }
     private val adapter = PetAdapter(this)

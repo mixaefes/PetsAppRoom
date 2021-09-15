@@ -22,14 +22,10 @@ import com.example.petsapproom.model.PetsViewModel
 class AddPetActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddPetBinding
     private var gender: Int = 0
-    private val resultIntent = Intent()
-
 
     private val petViewModel: PetsViewModel by viewModels {
         PetViewModelFactory(
-            (application as PetsApplication).repository,
-            PreferenceManager.getDefaultSharedPreferences(application.applicationContext),
-            application.applicationContext
+            (application as PetsApplication).repository
         )
     }
 
@@ -41,45 +37,43 @@ class AddPetActivity : AppCompatActivity() {
         binding.buttonDelete.isEnabled = false
 
         val extraId = intent.getIntExtra("id_key", 0)
-        petViewModel.getPet(extraId).observe(this,{
-
-            pet-> pet?.let{
-            binding.buttonDelete.isEnabled = true
-            binding.buttonDelete.setOnClickListener {
-                petViewModel.deletePet(pet)
-                finish()
-            }
+        petViewModel.getPet(extraId).observe(this, {
+                pet ->
+            pet?.let {
+                binding.buttonDelete.isEnabled = true
+                binding.buttonDelete.setOnClickListener {
+                    petViewModel.deletePet(pet)
+                    finish()
+                }
                 binding.editTextName.setText(it.name)
-            binding.editTextBreed.setText(it.breed)
-            binding.editTextWeight.setText(it.weight.toString())
-            binding.spinner.setSelection(it.gender)
-        }
+                binding.editTextBreed.setText(it.breed)
+                binding.editTextWeight.setText(it.weight.toString())
+                binding.spinner.setSelection(it.gender)
+            }
         })
-
-
 
         binding.imageButtonAdd.setOnClickListener {
             when {
                 TextUtils.isEmpty(binding.editTextName.text) -> setResult(RESULT_CANCELED)
                 TextUtils.isEmpty(binding.editTextBreed.text) -> setResult(RESULT_CANCELED)
                 TextUtils.isEmpty(binding.editTextWeight.text) -> setResult(RESULT_CANCELED)
-                else -> setResult(RESULT_OK)
+                else -> {
+                    setResult(RESULT_OK)
+                    val name = binding.editTextName.text.toString()
+                    val breed = binding.editTextBreed.text.toString()
+                    val weight = Integer.parseInt(binding.editTextWeight.text.toString())
+                    val newPet = EntityPet(name = name, breed = breed, gender = gender, weight = weight)
+                    if (extraId != 0) {
+                        newPet.id = extraId
+                        petViewModel.updatePet(newPet)
+                    } else {
+                        petViewModel.insertPet(newPet)
+                    }
+                    Toast.makeText(this, "adding a pet is successful", Toast.LENGTH_SHORT).show()
+                }
             }
-
-            val name = binding.editTextName.text.toString()
-            val breed = binding.editTextBreed.text.toString()
-            val weight = Integer.parseInt(binding.editTextWeight.text.toString())
-            val newPet = EntityPet(name = name, breed = breed, gender = gender, weight = weight)
-            if (extraId != 0) {
-                newPet.id = extraId
-                petViewModel.updatePet(newPet)
-            } else {
-                petViewModel.insertPet(newPet)
-            }
-
             finish()
         }
-
     }
 
     private fun setupSpinner() {
