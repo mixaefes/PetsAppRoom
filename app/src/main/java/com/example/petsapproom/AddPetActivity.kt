@@ -38,12 +38,13 @@ class AddPetActivity : AppCompatActivity() {
         binding = ActivityAddPetBinding.inflate(layoutInflater)
         setupSpinner()
         setContentView(binding.root)
-        //get id of view that was clicked
+        binding.buttonDelete.isEnabled = false
 
         val extraId = intent.getIntExtra("id_key", 0)
-        Log.i(LOG_TAG,"extra id = $extraId")
         petViewModel.getPet(extraId).observe(this,{
+
             pet-> pet?.let{
+            binding.buttonDelete.isEnabled = true
             binding.buttonDelete.setOnClickListener {
                 petViewModel.deletePet(pet)
                 finish()
