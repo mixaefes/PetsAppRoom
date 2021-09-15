@@ -93,7 +93,7 @@ class PetOpenHelper(context: Context) : SQLiteOpenHelper(
         cursor.close()
         return flowOf(listOfPets)
     }
-    fun getAllPetsSorted(sortBy:String): Flow<List<EntityPet>> {
+    fun getAllPetsSorted(sortBy:String = "id"): Flow<List<EntityPet>> {
         Log.i(TAG, "getAllPetsSorted is executed")
         val cursor =
             this.readableDatabase.rawQuery("SELECT * FROM ${Constants.TABLE_PETS_NAME} ORDER BY $sortBy", null)

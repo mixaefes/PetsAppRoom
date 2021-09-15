@@ -25,6 +25,7 @@
         android:contentDescription="@string/description_action_button_to_add_new_pet"
         android:focusable="true"
         app:backgroundTint="@color/color_yellow_green"
+        app:tint = "@color/color_purple"
         app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.892"
