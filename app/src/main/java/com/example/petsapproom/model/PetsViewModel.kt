@@ -27,8 +27,14 @@ class PetsViewModel(
     // the UI when the data actually changes.
     // - Repository is completely separated from the UI through the ViewModel.
 
-    val allPets: LiveData<List<EntityPet>> = repository.petsList.asLiveData()
-    var allPetsCursor = myPetDbHelper.getAllPets()
+  //  val allPets: LiveData<List<EntityPet>> = repository.petsList.asLiveData()
+  //  var allPetsCursor = myPetDbHelper.getAllPets()
+    fun getAll():LiveData<List<EntityPet>>{
+      return  when(prefs.getBoolean("switch_to_cursor", false)){
+            true -> myPetDbHelper.getAllPets().asLiveData()
+                else-> repository.petsList.asLiveData()
+        }
+    }
 
     //Launching a new coroutine to insert the data in a non-blocking way
 /*    fun insertPet(entityPet: EntityPet) = viewModelScope.launch {

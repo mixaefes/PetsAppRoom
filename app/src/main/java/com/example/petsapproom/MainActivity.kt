@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.petsapproom.adapter.OnPetClickListener
 import com.example.petsapproom.adapter.PetAdapter
 import com.example.petsapproom.data.cursor.PetOpenHelper
+import com.example.petsapproom.data.room.EntityPet
 import com.example.petsapproom.settings.SettingsActivity
 
 class MainActivity : AppCompatActivity(), OnPetClickListener {
@@ -44,7 +45,6 @@ class MainActivity : AppCompatActivity(), OnPetClickListener {
         //preferences
 
 
-
         binding.floatingActionButton.setOnClickListener {
             startAddActivity()
         }
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity(), OnPetClickListener {
 
     override fun onResume() {
         super.onResume()
-        val pref = PreferenceManager.getDefaultSharedPreferences(this)
+/*        val pref = PreferenceManager.getDefaultSharedPreferences(this)
         if(!pref.getBoolean("switch_to_cursor", false)) {
             petViewModel.allPets.observe(this) {
                 it.let { adapter.submitList(it) }
@@ -60,6 +60,9 @@ class MainActivity : AppCompatActivity(), OnPetClickListener {
         }else{
             adapter.submitList(PetOpenHelper(this).getAllPets())
         // adapter.submitList(petViewModel.allPetsCursor)
+        }*/
+        petViewModel.getAll().observe(this) {
+            it.let { adapter.submitList(it) }
         }
 
     }
@@ -88,19 +91,24 @@ class MainActivity : AppCompatActivity(), OnPetClickListener {
     override fun onPetClick(position: Int) {
         val pref = PreferenceManager.getDefaultSharedPreferences(this)
         val isCursor = pref.getBoolean("switch_to_cursor", false)
+        var pet: EntityPet? = null
+        //  val petsList = if(isCursor)petViewModel.myPetDbHelper.getAllPets() else petViewModel.allPets.value
+        petViewModel.getAll().observe(this) {
+            pet = it[position]
+            Log.i(LOG_TAG, "this is checked petsList: $it")
 
-        val petsList = if(isCursor)petViewModel.myPetDbHelper.getAllPets() else petViewModel.allPets.value
-        Log.i(LOG_TAG,"this is checked petsList: $petsList")
 
-        val pet = petsList?.get(position)
-        Log.i(LOG_TAG,"this is checked pet: $pet")
+            //     val pet = petsList?.get(position)
+            Log.i(LOG_TAG, "this is checked pet: $pet his id=${pet?.id}")
+        }
         val updateIntent = Intent(this, AddPetActivity::class.java)
-       // updateIntent.putExtra("id_key",petViewModel.allPets.value?.get(position)?.id)
-        Log.i(LOG_TAG,"onPetClick. id=${pet?.id}")
-        updateIntent.putExtra("id_key",pet?.id)
+        // updateIntent.putExtra("id_key",petViewModel.allPets.value?.get(position)?.id)
+        updateIntent.putExtra("id_key", pet?.id)
         startActivity(updateIntent)
+
     }
-    companion object{
-       private const val LOG_TAG = "MainActivity"
+
+    companion object {
+        private const val LOG_TAG = "MainActivity"
     }
 }

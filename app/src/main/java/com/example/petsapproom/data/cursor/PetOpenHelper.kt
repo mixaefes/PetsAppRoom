@@ -12,6 +12,7 @@ import com.example.petsapproom.Constants
 import com.example.petsapproom.data.room.EntityPet
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.flowOf
 
 
 class PetOpenHelper(context: Context) : SQLiteOpenHelper(
@@ -65,7 +66,7 @@ class PetOpenHelper(context: Context) : SQLiteOpenHelper(
         )
     }
 
-    fun getAllPets(): List<EntityPet> {
+    fun getAllPets(): Flow<List<EntityPet>> {
         Log.i(TAG, "getAllPets is executed")
         val cursor =
             this.readableDatabase.rawQuery("SELECT * FROM ${Constants.TABLE_PETS_NAME};", null)
@@ -90,7 +91,7 @@ class PetOpenHelper(context: Context) : SQLiteOpenHelper(
             }
         }
         cursor.close()
-        return listOfPets
+        return flowOf(listOfPets)
     }
 
     fun getPetById(id: Int): LiveData<EntityPet?> {
