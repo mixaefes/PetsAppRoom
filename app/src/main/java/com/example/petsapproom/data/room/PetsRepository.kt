@@ -22,7 +22,8 @@ context: Context, cursorSource:PetOpenHelper) {
     fun getAllPets(): Flow<List<EntityPet>>{
        return when(pref.getBoolean("switch_to_cursor", false)) {
             true -> cursorData.getAllPets()
-            else -> petsDao.getAllPets()
+           // else -> petsDao.getAllPets()
+            else -> petsDao.getAllPetsSorted(pref.getString("sort_by","")!!)
         }
     }
     // By default Room runs suspend queries off the main thread, therefore, we don't need to

@@ -7,4 +7,5 @@
     <string name="name">name</string>
     <string name="weight">weight</string>
     <string name="breed">breed</string>
+    <string name="nothing">""</string>
 </resources>

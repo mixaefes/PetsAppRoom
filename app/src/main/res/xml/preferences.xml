@@ -16,7 +16,7 @@
         android:entries="@array/sort"
         android:entryValues="@array/sort"
         android:key="sort_by"
-        android:defaultValue="name"
+        android:defaultValue="@string/nothing"
         android:summary="Sort by %s"
         android:title="Sort by..."/>
     </PreferenceCategory>

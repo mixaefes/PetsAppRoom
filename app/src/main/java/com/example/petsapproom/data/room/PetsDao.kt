@@ -9,6 +9,13 @@ interface PetsDao {
     @Query("SELECT * FROM pets")
     fun getAllPets(): Flow<List<EntityPet>>
 
+    @Query("SELECT * FROM pets ORDER BY " +
+            "CASE WHEN :orderBy = 'name' THEN name END," +
+            "CASE WHEN :orderBy = 'weight' THEN weight END," +
+            "CASE WHEN :orderBy = 'breed' THEN breed END," +
+            "CASE WHEN :orderBy = '' THEN id END")
+    fun getAllPetsSorted(orderBy:String): Flow<List<EntityPet>>
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertPet(entityPet: EntityPet)
 

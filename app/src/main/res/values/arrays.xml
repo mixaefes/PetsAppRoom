@@ -6,9 +6,11 @@
         <item>@string/gender_female</item>
     </string-array>
     <string-array name="sort">sort_settings
+        <item>@string/nothing</item>
         <item>@string/name</item>
         <item>@string/weight</item>
         <item>@string/breed</item>
     </string-array>
+
 
 </resources>
