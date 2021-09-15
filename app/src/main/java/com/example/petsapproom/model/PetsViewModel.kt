@@ -10,6 +10,8 @@ import com.example.petsapproom.PetsApplication
 import com.example.petsapproom.data.cursor.PetOpenHelper
 import com.example.petsapproom.data.room.EntityPet
 import com.example.petsapproom.data.room.PetsRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
@@ -19,7 +21,7 @@ class PetsViewModel(
     private val prefs: SharedPreferences,
     private val context: Context
 ) : ViewModel() {
-
+    private val mScope = CoroutineScope(Dispatchers.Main)
 
      val myPetDbHelper = PetOpenHelper(context)
     // Using LiveData and caching what allWords returns has several benefits:
@@ -27,13 +29,14 @@ class PetsViewModel(
     // the UI when the data actually changes.
     // - Repository is completely separated from the UI through the ViewModel.
 
-  //  val allPets: LiveData<List<EntityPet>> = repository.petsList.asLiveData()
+    var allPets: LiveData<List<EntityPet>> = repository.petsList.asLiveData()
   //  var allPetsCursor = myPetDbHelper.getAllPets()
     fun getAll():LiveData<List<EntityPet>>{
-      return  when(prefs.getBoolean("switch_to_cursor", false)){
-            true -> myPetDbHelper.getAllPets().asLiveData()
-                else-> repository.petsList.asLiveData()
-        }
+
+      return when (prefs.getBoolean("switch_to_cursor", false)) {
+              true -> myPetDbHelper.getAllPets().asLiveData()
+              else -> repository.petsList.asLiveData()
+          }
     }
 
     //Launching a new coroutine to insert the data in a non-blocking way

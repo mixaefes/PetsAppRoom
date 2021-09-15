@@ -41,6 +41,7 @@ class AddPetActivity : AppCompatActivity() {
         //get id of view that was clicked
 
         val extraId = intent.getIntExtra("id_key", 0)
+        Log.i(LOG_TAG,"extra id = $extraId")
         petViewModel.getPet(extraId).observe(this,{
             pet-> pet?.let{
             binding.buttonDelete.setOnClickListener {
