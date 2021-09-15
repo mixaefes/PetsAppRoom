@@ -8,4 +8,5 @@
     <string name="weight">weight</string>
     <string name="breed">breed</string>
     <string name="nothing">""</string>
+    <string name="id">id</string>
 </resources>

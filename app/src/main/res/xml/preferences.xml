@@ -14,7 +14,7 @@
 
     <ListPreference
         android:entries="@array/sort"
-        android:entryValues="@array/sort"
+        android:entryValues="@array/sort_values"
         android:key="sort_by"
         android:defaultValue="@string/nothing"
         android:summary="Sort by %s"

@@ -22,6 +22,7 @@ class Constants {
 
         const val SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS $TABLE_PETS_NAME"
+
     }
 
 }

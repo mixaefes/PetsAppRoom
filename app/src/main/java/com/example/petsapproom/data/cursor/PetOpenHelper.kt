@@ -93,6 +93,33 @@ class PetOpenHelper(context: Context) : SQLiteOpenHelper(
         cursor.close()
         return flowOf(listOfPets)
     }
+    fun getAllPetsSorted(sortBy:String): Flow<List<EntityPet>> {
+        Log.i(TAG, "getAllPetsSorted is executed")
+        val cursor =
+            this.readableDatabase.rawQuery("SELECT * FROM ${Constants.TABLE_PETS_NAME} ORDER BY $sortBy", null)
+        val listOfPets = mutableListOf<EntityPet>()
+        cursor.use {
+            if (it.moveToFirst()) {
+                do {
+                    val petId = it.getInt(it.getColumnIndex(it.getColumnName(0)))
+                    val petName = it.getString(it.getColumnIndex(Constants.COLUMN_NAME))
+                    val petBreed = it.getString(it.getColumnIndex(Constants.COLUMN_BREED))
+                    val petGender = it.getInt(it.getColumnIndex(Constants.COLUMN_GENDER))
+                    val petWeight = it.getInt(it.getColumnIndex(Constants.COLUMN_WEIGHT))
+                    val pet = EntityPet(
+                        name = petName,
+                        breed = petBreed,
+                        gender = petGender,
+                        weight = petWeight,
+                        id = petId
+                    )
+                    listOfPets.add(pet)
+                } while (it.moveToNext())
+            }
+        }
+        cursor.close()
+        return flowOf(listOfPets)
+    }
 
     fun getPetById(id: Int): LiveData<EntityPet?> {
         Log.i(TAG, "getPetById by cursor is called id=$id")

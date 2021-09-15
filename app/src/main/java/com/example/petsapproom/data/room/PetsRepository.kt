@@ -21,7 +21,7 @@ context: Context, cursorSource:PetOpenHelper) {
     @WorkerThread
     fun getAllPets(): Flow<List<EntityPet>>{
        return when(pref.getBoolean("switch_to_cursor", false)) {
-            true -> cursorData.getAllPets()
+            true -> cursorData.getAllPetsSorted(pref.getString("sort_by","")!!)
            // else -> petsDao.getAllPets()
             else -> petsDao.getAllPetsSorted(pref.getString("sort_by","")!!)
         }
