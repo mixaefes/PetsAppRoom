@@ -17,7 +17,14 @@ context: Context, cursorSource:PetOpenHelper) {
     // Observed Flow will notify the observer when the data has changed.
     val petsList: Flow<List<EntityPet>> = if(pref.getBoolean("switch_to_cursor", false))cursorData.getAllPets() else petsDao.getAllPets()
 
-
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    fun getAllPets(): Flow<List<EntityPet>>{
+       return when(pref.getBoolean("switch_to_cursor", false)) {
+            true -> cursorData.getAllPets()
+            else -> petsDao.getAllPets()
+        }
+    }
     // By default Room runs suspend queries off the main thread, therefore, we don't need to
     // implement anything else to ensure we're not doing long running database work
     // off the main thread.

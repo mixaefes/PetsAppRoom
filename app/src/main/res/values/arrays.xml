@@ -5,4 +5,10 @@
         <item>@string/gender_male</item>
         <item>@string/gender_female</item>
     </string-array>
+    <string-array name="sort">sort_settings
+        <item>@string/name</item>
+        <item>@string/weight</item>
+        <item>@string/breed</item>
+    </string-array>
+
 </resources>

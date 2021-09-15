@@ -20,23 +20,15 @@ class PetsViewModel(
     private val repository: PetsRepository,
 ) : ViewModel() {
 
-    //   val myPetDbHelper = PetOpenHelper(context)
-    // Using LiveData and caching what allWords returns has several benefits:
-    // - We can put an observer on the data (instead of polling for changes) and only update the
-    // the UI when the data actually changes.
-    // - Repository is completely separated from the UI through the ViewModel.
 
-  //  var allPets: LiveData<List<EntityPet>> = repository.petsList.asLiveData()
-
-    //  var allPetsCursor = myPetDbHelper.getAllPets()
-    fun getAll(): LiveData<List<EntityPet>> {
+  /*  fun getAll(): LiveData<List<EntityPet>> {
         return repository.petsList.asLiveData()
+    }*/
+   fun getAll(): LiveData<List<EntityPet>> {
+        return repository.getAllPets().asLiveData()
     }
 
-    //Launching a new coroutine to insert the data in a non-blocking way
-/*    fun insertPet(entityPet: EntityPet) = viewModelScope.launch {
-        repository.insert(entityPet)
-    }*/
+
     fun insertPet(entityPet: EntityPet) {
         viewModelScope.launch { repository.insert(entityPet) }
     }
@@ -59,7 +51,6 @@ class PetsViewModel(
     }
 
 }
-
 
 class PetViewModelFactory(
     private val repository: PetsRepository

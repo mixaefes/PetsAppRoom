@@ -7,5 +7,6 @@ import com.example.petsapproom.data.room.PetsRoomDatabase
 
 class PetsApplication : Application(){
     val database by lazy { PetsRoomDatabase.getDatabase(this) }
-    val repository by lazy { PetsRepository(database.petsDao(),this, PetOpenHelper(this)) }
+    val cursorDataBase by lazy{PetOpenHelper(this)}
+    val repository by lazy { PetsRepository(database.petsDao(),this, cursorDataBase) }
 }

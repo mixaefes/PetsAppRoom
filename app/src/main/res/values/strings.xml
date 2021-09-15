@@ -4,4 +4,7 @@
     <string name="gender_unknown">UNKNOWN</string>
     <string name="gender_male">MALE</string>
     <string name="gender_female">FEMALE</string>
+    <string name="name">name</string>
+    <string name="weight">weight</string>
+    <string name="breed">breed</string>
 </resources>

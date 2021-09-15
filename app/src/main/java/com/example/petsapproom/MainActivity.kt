@@ -77,10 +77,8 @@ class MainActivity : AppCompatActivity(), OnPetClickListener {
 
     override fun onPetClick(position: Int) {
         pet = petsList[position]
-        Log.i(LOG_TAG, "this is checked petsList: $petsList")
         Log.i(LOG_TAG, "this is checked pet: $pet his id=${pet?.id}")
         val updateIntent = Intent(this, AddPetActivity::class.java)
-        Log.i(LOG_TAG, "this is checked pet after observer: $pet his id=${pet?.id}")
         updateIntent.putExtra("id_key", pet?.id)
         startActivity(updateIntent)
     }

@@ -10,4 +10,14 @@
             android:key="switch_to_cursor"
             android:title="Use cursor" />
     </PreferenceCategory>
+    <PreferenceCategory android:title="Which sorting do you prefer?">
+
+    <ListPreference
+        android:entries="@array/sort"
+        android:entryValues="@array/sort"
+        android:key="sort_by"
+        android:defaultValue="name"
+        android:summary="Sort by %s"
+        android:title="Sort by..."/>
+    </PreferenceCategory>
 </PreferenceScreen>
